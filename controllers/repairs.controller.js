@@ -21,7 +21,7 @@ exports.repairById = (req, res) => {
 
   res.json({
     status: 'success',
-    message: 'reparaciones por id',
+    message: 'the element has been found successfully',
     repair,
   });
 };
@@ -38,7 +38,7 @@ exports.createRepair = async (req, res) => {
   res.status(201).json({
     status: 'success',
     message:
-      'The user has been created successfully',
+      'The element has been created successfully',
     repairs,
   });
 };
@@ -63,7 +63,7 @@ exports.updateRepair = async (req, res) => {
   res.status(200).json({
     status: 'success',
     message:
-      'The user has been update successfully',
+      'The element has been update successfully',
   });
 };
 
@@ -72,6 +72,6 @@ exports.deleteRepair = async (req, res) => {
 
   await repair.update({ status: 'canceled' });
   res.json({
-    message: 'The user has been Deleted',
+    message: 'The element has been Deleted',
   });
 };

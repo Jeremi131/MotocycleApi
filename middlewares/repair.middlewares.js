@@ -17,7 +17,7 @@ exports.validExistRepair = async (
   if (!repair) {
     return res.status(404).json({
       status: 'error',
-      message: `Element with id: ${id} not found`,
+      message: `The element with id: ${id} not found`,
     });
   }
 
