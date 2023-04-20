@@ -45,7 +45,7 @@ exports.login = catchAsync(
     const user = await User.findOne({
       where: {
         email: email.toLowerCase(),
-        status: 'active',
+        status: 'available',
       },
     });
 
@@ -87,22 +87,21 @@ exports.login = catchAsync(
   }
 );
 
-exports.findAllUsers = catchAsync(
-  async (req, res) => {
-    const users = await User.findAll({
-      where: {
-        status: 'available',
-      },
-    });
+exports.findAllUsers = catchAsync(async (req, res) => {
+  const users = await User.findAll({
+    where: {
+      status: 'available',
+    },
+  });
 
-    res.status(200).json({
-      status: 'success',
-      message:
-        'The operation has been carried out successfully',
-      results: users.length,
-      users,
-    });
-  }
+  res.status(200).json({
+    status: 'success',
+    message:
+      'The operation has been carried out successfully',
+    results: users.length,
+    users,
+  });
+}
 );
 
 exports.updateUser = catchAsync(
