@@ -87,21 +87,25 @@ exports.login = catchAsync(
   }
 );
 
-exports.findAllUsers = catchAsync(async (req, res) => {
-  const users = await User.findAll({
-    where: {
-      status: 'available',
-    },
-  });
+exports.findAllUsers = catchAsync(
+  async (req, res) => {
+    const users = await User.findAll({
+      where: {
+        status: 'available',
+      },
+      attributes: {
+        exclude: ['password'],
+      },
+    });
 
-  res.status(200).json({
-    status: 'success',
-    message:
-      'The operation has been carried out successfully',
-    results: users.length,
-    users,
-  });
-}
+    res.status(200).json({
+      status: 'success',
+      message:
+        'The operation has been carried out successfully',
+      results: users.length,
+      users,
+    });
+  }
 );
 
 exports.updateUser = catchAsync(
@@ -150,7 +154,13 @@ exports.userById = catchAsync(
       status: 'success',
       message:
         'the user has been found successfully',
-      user,
+      user: {
+        id: user.id,
+        name: user.name,
+        email: user.email,
+        role: user.role,
+        status: user.status,
+      },
     });
   }
 );

@@ -1,4 +1,5 @@
 const Repair = require('../models/repairs.model');
+const User = require('../models/users.models');
 const catchAsync = require('../utils/catchAsync');
 
 exports.findAllRepairs = catchAsync(
@@ -7,6 +8,19 @@ exports.findAllRepairs = catchAsync(
       where: {
         status: 'pending',
       },
+
+      include: [
+        {
+          model: User,
+          attributes: {
+            exclude: [
+              'password',
+              'role',
+              'status',
+            ],
+          },
+        },
+      ],
     });
 
     res.status(200).json({
@@ -23,11 +37,28 @@ exports.repairById = catchAsync(
   async (req, res) => {
     const { repair } = req;
 
-    res.json({
+    const repairInfo = await Repair.findOne({
+      where: {
+        id: repair.id,
+      },
+      include: [
+        {
+          model: User,
+          attributes: {
+            exclude: [
+              'password',
+              'role',
+              'status',
+            ],
+          },
+        },
+      ],
+    });
+
+    res.status(200).json({
       status: 'success',
-      message:
-        'the element has been found successfully',
-      repair,
+      message: 'The query has been done success',
+      repairInfo,
     });
   }
 );
@@ -36,25 +67,22 @@ exports.createRepair = catchAsync(
   async (req, res) => {
     const {
       date,
-      status,
-      motorsNumber,
       description,
+      motorsNumber,
       userId,
     } = req.body;
 
-    const repairs = await Repair.create({
+    const repair = await Repair.create({
       date,
-      status,
-      motorsNumber,
-      description,
       userId,
+      description,
+      motorsNumber,
     });
 
     res.status(201).json({
       status: 'success',
-      message:
-        'the repair has been scheduled successfully',
-      repairs,
+      message: 'The repair has been created!',
+      repair,
     });
   }
 );
@@ -80,7 +108,7 @@ exports.updateRepair = catchAsync(
     res.status(200).json({
       status: 'success',
       message:
-        'The element has been update successfully',
+        'The repair has been update successfully',
     });
   }
 );
@@ -91,7 +119,7 @@ exports.deleteRepair = catchAsync(
 
     await repair.update({ status: 'canceled' });
     res.json({
-      message: 'The element has been Deleted',
+      message: 'The repair has been Deleted',
     });
   }
 );

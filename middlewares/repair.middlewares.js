@@ -8,7 +8,7 @@ exports.validExistRepair = catchAsync(
     const repair = await Repair.findOne({
       where: {
         id,
-        status: 'pending',
+        status: ['pending', 'completed'],
       },
     });
 

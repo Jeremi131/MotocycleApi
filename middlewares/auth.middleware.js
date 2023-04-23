@@ -27,8 +27,6 @@ exports.protect = catchAsync(
       );
     }
 
-    console.log(token);
-
     const decoded = await promisify(jwt.verify)(
       token,
       process.env.SECRET_JWT_SEED
@@ -90,7 +88,7 @@ exports.protectAccountOwner = catchAsync(
 
 exports.restrictTo = (...roles) => {
   return (req, res, next) => {
-    if (roles.includes(req.sessionUser.role)) {
+    if (!roles.includes(req.sessionUser.role)) {
       return next(
         new AppError(
           'You do not have permission to perform this action!',
